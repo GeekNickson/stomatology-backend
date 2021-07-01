@@ -3,7 +3,7 @@ CREATE TABLE app_image
 (
     id   bigserial PRIMARY KEY,
     path varchar(255) NOT NULL,
-    name varchar(255) NOT NULL
+    "name" varchar(255) NOT NULL
 );
 
 
@@ -11,7 +11,7 @@ CREATE TABLE app_image
 CREATE TABLE app_role
 (
     id   bigserial PRIMARY KEY,
-    name varchar(20)
+    "name" varchar(20)
 );
 
 CREATE TABLE app_account
@@ -50,7 +50,7 @@ CREATE TABLE app_admin
 CREATE TABLE app_specialty
 (
     id   bigserial PRIMARY KEY,
-    name character varying(100) NOT NULL
+    "name" character varying(100) NOT NULL
 );
 
 --Doctor
@@ -67,17 +67,21 @@ CREATE TABLE app_doctor
 CREATE TABLE app_service
 (
     id        bigserial PRIMARY KEY,
-    name      character varying(255),
+    "name"      character varying(255),
     price     decimal(8, 2),
-    doctor_id bigint NOT NULL REFERENCES app_doctor (id),
     image_id bigint NOT NULL REFERENCES app_image (id)
+);
+
+CREATE TABLE app_doctor_service (
+    doctor_id bigint NOT NULL REFERENCES app_doctor(id),
+    service_id bigint NOT NULL REFERENCES app_service(id)
 );
 
 CREATE TABLE app_schedule
 (
     id          bigserial PRIMARY KEY,
     day_of_week int NOT NULL,
-    start       time     NOT NULL,
+    "start"       time     NOT NULL,
     "end"       time     NOT NULL,
     doctor_id   bigint   NOT NULL REFERENCES app_doctor (id)
 );
@@ -85,7 +89,7 @@ CREATE TABLE app_schedule
 CREATE TABLE app_appointment
 (
     id         bigserial PRIMARY KEY,
-    time       timestamp NOT NULL,
+    "time"       timestamp NOT NULL,
     doctor_id  bigint    NOT NULL REFERENCES app_doctor (id),
     patient_id bigint    NOT NULL REFERENCES app_patient (id),
     service_id bigint    NOT NULL REFERENCES app_service (id)

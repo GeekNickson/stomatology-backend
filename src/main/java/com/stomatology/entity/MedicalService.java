@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "app_service")
@@ -33,12 +35,22 @@ public class MedicalService {
     @NotNull
     private Image image;
 
-    //TO-DO Make many to many
-    @ManyToOne
-    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
-    @NotNull
-    private Doctor doctor;
+    @ManyToMany(mappedBy = "services")
+    private Set<Doctor> doctors;
 
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Appointment> appointments;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MedicalService that = (MedicalService) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

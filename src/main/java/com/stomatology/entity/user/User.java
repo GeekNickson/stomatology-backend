@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Table(name = "app_user")
@@ -22,7 +23,7 @@ public class User {
     @NotNull
     private String firstName;
 
-    @Column(name="last_name")
+    @Column(name = "last_name")
     @NotNull
     private String lastName;
 
@@ -33,5 +34,19 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @NotNull
     private Account account;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(account, user.account);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, account);
+    }
 }
