@@ -3,18 +3,17 @@ package com.stomatology.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
-public class UserDto implements Serializable {
-    private Long id;
+public abstract class UserDto {
 
-    private String firstName;
+    protected Long id;
 
-    private String lastName;
+    protected String firstName;
 
-    private String profilePicture;
+    protected String lastName;
 
-    private String email;
+    protected String email;
+
+    protected String profilePictureUrl;
 }
