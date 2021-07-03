@@ -24,6 +24,11 @@ public class ImageService {
 
         String fileName = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
         Path path = Paths.get(FileStorageConstants.STATIC_IMAGES_DIR + fileName);
+
+        if (!Files.exists(Paths.get(FileStorageConstants.STATIC_IMAGES_DIR))) {
+            Files.createDirectories(Path.of(FileStorageConstants.STATIC_IMAGES_DIR));
+        }
+
         Files.write(path, file.getBytes());
 
         image.setPath(fileName);

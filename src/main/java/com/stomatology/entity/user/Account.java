@@ -29,7 +29,7 @@ public class Account {
     @NonNull
     private String password;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @NotNull
     @NonNull
