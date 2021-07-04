@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "app_account")
@@ -34,6 +35,9 @@ public class Account {
     @NotNull
     @NonNull
     private Role role;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<RefreshToken> refreshToken;
 
     @Override
     public boolean equals(Object o) {
