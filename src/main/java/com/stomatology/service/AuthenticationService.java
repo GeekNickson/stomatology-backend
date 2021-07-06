@@ -2,7 +2,9 @@ package com.stomatology.service;
 
 import com.stomatology.constants.AuthenticationConstants;
 import com.stomatology.dto.LoginDto;
+import com.stomatology.dto.UserDto;
 import com.stomatology.dto.create.CreatePatientDto;
+import com.stomatology.dto.response.LoginResponseDto;
 import com.stomatology.entity.user.Account;
 import com.stomatology.entity.user.RefreshToken;
 import com.stomatology.security.JwtModel;
@@ -32,11 +34,12 @@ public class AuthenticationService {
     private final AccountService accountService;
     private final PatientService patientService;
     private final RefreshTokenService refreshTokenService;
+    private final UserService userService;
 
     @Value("${app.jwt.refresh-exp}")
     private Long refreshCookieMaxAge;
 
-    public String login(LoginDto credentials, HttpServletResponse httpServletResponse) {
+    public LoginResponseDto login(LoginDto credentials, HttpServletResponse httpServletResponse) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword());
 
@@ -45,15 +48,16 @@ public class AuthenticationService {
 
         String email = authentication.getName();
         Account account = accountService.findByEmail(email);
+        UserDto user = userService.findByAccount(account);
 
         JwtModel jwts = jwtService.getTokens(account);
         refreshTokenService.saveRefreshToken(jwts.getRefreshToken(), account);
 
         setRefreshCookie(jwts.getRefreshToken(), httpServletResponse);
-        return jwts.getAccessToken();
+        return new LoginResponseDto(user, jwts.getAccessToken());
     }
 
-    public String register(CreatePatientDto patientDto, HttpServletResponse httpServletResponse) {
+    public LoginResponseDto register(CreatePatientDto patientDto, HttpServletResponse httpServletResponse) {
         patientService.create(patientDto);
         return login(new LoginDto(patientDto.getEmail(), patientDto.getPassword()), httpServletResponse);
     }

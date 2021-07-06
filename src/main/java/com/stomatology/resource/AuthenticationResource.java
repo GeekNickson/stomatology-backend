@@ -2,6 +2,7 @@ package com.stomatology.resource;
 
 import com.stomatology.dto.LoginDto;
 import com.stomatology.dto.create.CreatePatientDto;
+import com.stomatology.dto.response.LoginResponseDto;
 import com.stomatology.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -19,14 +20,14 @@ public class AuthenticationResource {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginDto credentials, HttpServletResponse httpServletResponse) {
+    public LoginResponseDto login(@RequestBody LoginDto credentials, HttpServletResponse httpServletResponse) {
         return authenticationService.login(credentials, httpServletResponse);
     }
 
 
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String register(@ModelAttribute CreatePatientDto patientDto, HttpServletResponse httpServletResponse) {
+    public LoginResponseDto register(@ModelAttribute CreatePatientDto patientDto, HttpServletResponse httpServletResponse) {
         return authenticationService.register(patientDto, httpServletResponse);
     }
 

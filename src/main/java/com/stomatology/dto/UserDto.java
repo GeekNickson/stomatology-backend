@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class UserDto {
+public class UserDto {
 
     protected Long id;
 
