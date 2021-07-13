@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,17 +35,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
-                    .authenticationEntryPoint(securityProblemSupport)
+                .authenticationEntryPoint(securityProblemSupport)
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/api/register").permitAll()
-                    .antMatchers("/api/login").permitAll()
-                    .anyRequest().authenticated()
+                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v3/api-docs/**",
+                "/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/swagger.html");
     }
 
     @Override
