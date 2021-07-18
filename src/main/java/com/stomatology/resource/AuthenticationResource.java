@@ -1,6 +1,7 @@
 package com.stomatology.resource;
 
 import com.stomatology.dto.LoginDto;
+import com.stomatology.dto.UserDto;
 import com.stomatology.dto.create.CreatePatientDto;
 import com.stomatology.dto.response.LoginResponseDto;
 import com.stomatology.service.AuthenticationService;
@@ -24,7 +25,6 @@ public class AuthenticationResource {
         return authenticationService.login(credentials, httpServletResponse);
     }
 
-
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public LoginResponseDto register(@ModelAttribute CreatePatientDto patientDto, HttpServletResponse httpServletResponse) {
@@ -40,5 +40,10 @@ public class AuthenticationResource {
     @GetMapping("/refresh")
     public String refreshToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         return authenticationService.refresh(httpServletRequest, httpServletResponse);
+    }
+
+    @GetMapping("/auth")
+    public UserDto getAuth() {
+        return authenticationService.getAuth();
     }
 }

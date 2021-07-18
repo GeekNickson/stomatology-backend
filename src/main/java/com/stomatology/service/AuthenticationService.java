@@ -101,6 +101,13 @@ public class AuthenticationService {
 
     }
 
+    public UserDto getAuth() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        Account account = accountService.findByEmail(email);
+        return userService.findByAccount(account);
+    }
+
     private void removeCookie(Cookie cookie, HttpServletResponse httpServletResponse) {
         cookie.setMaxAge(0);
         httpServletResponse.addCookie(cookie);
