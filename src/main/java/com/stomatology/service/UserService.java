@@ -8,6 +8,7 @@ import com.stomatology.entity.user.User;
 import com.stomatology.mapper.UserMapper;
 import com.stomatology.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final AccountService accountService;
@@ -31,7 +33,7 @@ public class UserService {
         try {
             user.setProfilePicture(imageService.save(createUserDto.getProfilePicture()));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error saving picture: {}", e.getMessage());
         }
 
         user.setAccount(accountService.create(createUserDto.getEmail(), createUserDto.getPassword(), roleName));
