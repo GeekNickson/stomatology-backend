@@ -35,7 +35,7 @@ public class AppointmentResource {
     }
 
     @PostMapping()
-    public AppointmentDto create(AppointmentDto appointmentDto) {
+    public AppointmentDto create(@RequestBody  AppointmentDto appointmentDto) {
         return appointmentService.create(appointmentDto);
     }
 

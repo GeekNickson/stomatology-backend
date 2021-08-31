@@ -1,6 +1,7 @@
 package com.stomatology.entity;
 
 import com.stomatology.entity.enums.Weekday;
+import com.stomatology.entity.user.Doctor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,11 +25,14 @@ public class Schedule {
     @NotNull
     private Weekday weekday;
 
-    @Column(name = "start")
+    @Column(name = "start_time")
     @NotNull
     private LocalTime start;
 
-    @Column(name = "end")
+    @Column(name = "end_time")
     @NotNull
     private LocalTime end;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Doctor doctor;
 }

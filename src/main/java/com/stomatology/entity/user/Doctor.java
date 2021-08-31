@@ -46,7 +46,7 @@ public class Doctor {
     )
     private Set<MedicalService> services;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
     private List<Schedule> schedules;
 

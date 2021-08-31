@@ -6,17 +6,18 @@ import com.stomatology.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/doctors")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class DoctorResource {
 
     private final DoctorService doctorService;
 
-    @GetMapping()
+    @GetMapping("/public/doctors")
     public List<DoctorDto> findAll() {
         return doctorService.findAll();
     }
@@ -26,9 +27,10 @@ public class DoctorResource {
         return doctorService.findOne(id);
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+    @PostMapping(path = "/doctors", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public DoctorDto create(@ModelAttribute CreateDoctorDto doctorDto) {
+    public DoctorDto create(@RequestPart("profilePicture") MultipartFile file, @RequestPart("doctor") CreateDoctorDto doctorDto) {
+        doctorDto.setProfilePicture(file);
         return doctorService.create(doctorDto);
     }
 

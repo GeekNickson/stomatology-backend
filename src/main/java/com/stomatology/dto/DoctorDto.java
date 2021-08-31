@@ -10,8 +10,9 @@ import java.util.Set;
 @Setter
 @Getter
 public class DoctorDto extends UserDto implements Serializable {
+    private Integer experience;
     private String phoneNumber;
     private SpecialtyDto specialty;
     private Set<ServiceDto> services;
-    private List<ScheduleDto> scheduleDto;
+    private List<ScheduleDto> schedules;
 }

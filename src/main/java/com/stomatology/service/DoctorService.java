@@ -6,10 +6,12 @@ import com.stomatology.entity.MedicalService;
 import com.stomatology.entity.enums.RoleName;
 import com.stomatology.entity.user.Doctor;
 import com.stomatology.mapper.DoctorMapper;
+import com.stomatology.mapper.ScheduleMapper;
 import com.stomatology.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Set;
@@ -24,15 +26,19 @@ public class DoctorService {
     private final UserService userService;
     private final ScheduleService scheduleService;
     private final MedicalServiceService medicalServiceService;
+    private final SpecialtyService specialtyService;
 
+    @Transactional
     public DoctorDto create(CreateDoctorDto createDoctorDto) {
         Doctor doctor = new Doctor();
         doctor.setExperience(createDoctorDto.getExperience());
         doctor.setPhoneNumber(createDoctorDto.getPhoneNumber());
-        doctor.setSchedules(scheduleService.save(createDoctorDto.getSchedules()));
         doctor.setUser(userService.create(createDoctorDto, RoleName.DOCTOR));
+        doctor.setSpecialty(specialtyService.findOne(createDoctorDto.getSpecialtyId()));
         Set<MedicalService> services = medicalServiceService.findAll(createDoctorDto.getServicesIds());
         doctor.setServices(services);
+        doctorRepository.save(doctor);
+        doctor.setSchedules(scheduleService.save(createDoctorDto.getSchedules(), doctor));
         return doctorMapper.toDto(doctorRepository.save(doctor));
     }
 
