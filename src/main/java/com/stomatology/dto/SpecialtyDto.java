@@ -10,5 +10,6 @@ import java.io.Serializable;
 public class SpecialtyDto implements Serializable {
 
     private Long id;
+
     private String name;
 }

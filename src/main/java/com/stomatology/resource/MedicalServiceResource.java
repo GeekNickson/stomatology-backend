@@ -1,5 +1,6 @@
 package com.stomatology.resource;
 
+import com.stomatology.constants.RoleConstants;
 import com.stomatology.dto.ServiceDto;
 import com.stomatology.dto.create.CreateServiceDto;
 import com.stomatology.service.MedicalServiceService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -23,11 +25,13 @@ public class MedicalServiceResource {
 
     @PostMapping(value="/services", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({RoleConstants.ADMIN})
     public ServiceDto create(@ModelAttribute CreateServiceDto serviceDto) {
         return medicalServiceService.create(serviceDto);
     }
 
     @DeleteMapping("/services/{id}")
+    @RolesAllowed(RoleConstants.ADMIN)
     public void delete(@PathVariable Long id) {
         medicalServiceService.delete(id);
     }

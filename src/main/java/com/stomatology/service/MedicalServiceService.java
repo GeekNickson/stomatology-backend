@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +47,11 @@ public class MedicalServiceService {
                 .collect(Collectors.toList());
     }
 
+    public Set<MedicalService> findAll(Set<Long> ids) {
+        Set<MedicalService> services = new HashSet<>();
+        ids.forEach(id -> medicalServiceRepository.findById(id).ifPresent(services::add));
+        return services;
+    }
     public void delete(Long id) {
         medicalServiceRepository.deleteById(id);
     }
