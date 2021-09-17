@@ -8,9 +8,11 @@ import com.stomatology.entity.user.Doctor;
 import com.stomatology.mapper.DoctorMapper;
 import com.stomatology.mapper.ScheduleMapper;
 import com.stomatology.repository.DoctorRepository;
+import com.stomatology.repository.MedicalServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
@@ -27,6 +29,7 @@ public class DoctorService {
     private final ScheduleService scheduleService;
     private final MedicalServiceService medicalServiceService;
     private final SpecialtyService specialtyService;
+    private final MedicalServiceRepository medicalServiceRepository;
 
     @Transactional
     public DoctorDto create(CreateDoctorDto createDoctorDto) {
@@ -40,6 +43,17 @@ public class DoctorService {
         doctorRepository.save(doctor);
         doctor.setSchedules(scheduleService.save(createDoctorDto.getSchedules(), doctor));
         return doctorMapper.toDto(doctorRepository.save(doctor));
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = ResponseStatusException.class)
+    public List<DoctorDto> findDoctorsByService(Long serviceId) {
+        MedicalService service = medicalServiceRepository.findById(serviceId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return doctorRepository.findDistinctByServicesContaining(service)
+                .stream()
+                .map(doctorMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     public List<DoctorDto> findAll() {

@@ -23,6 +23,16 @@ public class MedicalServiceResource {
         return medicalServiceService.findAll();
     }
 
+    @GetMapping("/services/{id}")
+    public ServiceDto findOne(@PathVariable Long id) {
+        return medicalServiceService.findOne(id);
+    }
+
+    @GetMapping("/services/doctors/{doctorId}")
+    public List<ServiceDto> findByDoctor(@PathVariable Long doctorId) {
+        return medicalServiceService.findByDoctor(doctorId);
+    }
+
     @PostMapping(value="/services", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed({RoleConstants.ADMIN})

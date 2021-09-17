@@ -22,9 +22,14 @@ public class DoctorResource {
         return doctorService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/doctors/{id}")
     public DoctorDto findOne(@PathVariable Long id) {
         return doctorService.findOne(id);
+    }
+
+    @GetMapping("/doctors/services/{serviceId}")
+    public List<DoctorDto> findByService(@PathVariable Long serviceId) {
+        return doctorService.findDoctorsByService(serviceId);
     }
 
     @PostMapping(path = "/doctors", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
