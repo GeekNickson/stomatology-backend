@@ -16,4 +16,6 @@ public class UserDto {
     protected String email;
 
     protected String profilePictureUrl;
+
+    protected String roleName;
 }

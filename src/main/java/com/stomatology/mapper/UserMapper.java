@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper extends EntityMapper<User, UserDto> {
+    @Mapping(target = "roleName", source = "account.role.name")
     @Mapping(target = "profilePictureUrl", source = "profilePicture.path")
     @Mapping(target = "email", source = "account.email")
     @Override

@@ -7,17 +7,6 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class PatientDto implements Serializable {
+public class PatientDto extends UserDto implements Serializable {
 
-    private Long id;
-
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
-
-    private String phoneNumber;
-
-    private String profilePictureUrl;
 }

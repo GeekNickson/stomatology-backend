@@ -1,11 +1,13 @@
 package com.stomatology.service;
 
 import com.stomatology.dto.AppointmentDto;
+import com.stomatology.dto.create.CreateAppointmentDto;
 import com.stomatology.entity.Appointment;
 import com.stomatology.entity.MedicalService;
 import com.stomatology.entity.user.Doctor;
 import com.stomatology.entity.user.Patient;
 import com.stomatology.mapper.AppointmentMapper;
+import com.stomatology.mapper.CreateAppointmentMapper;
 import com.stomatology.repository.AppointmentRepository;
 import com.stomatology.repository.DoctorRepository;
 import com.stomatology.repository.MedicalServiceRepository;
@@ -23,25 +25,26 @@ import java.util.stream.Collectors;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
-    private final AppointmentMapper appointmentMapper;
+    private final CreateAppointmentMapper createAppointmentMapper;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
     private final MedicalServiceRepository medicalServiceRepository;
+    private final AppointmentMapper appointmentMapper;
 
-    public AppointmentDto create(AppointmentDto appointmentDto) {
-        Appointment appointment = appointmentMapper.toEntity(appointmentDto);
+    public CreateAppointmentDto create(CreateAppointmentDto createAppointmentDto) {
+        Appointment appointment = createAppointmentMapper.toEntity(createAppointmentDto);
 
-        Doctor doctor = doctorRepository.findById(appointmentDto.getDoctorId())
+        Doctor doctor = doctorRepository.findById(createAppointmentDto.getDoctorId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Patient patient = patientRepository.findById(appointmentDto.getPatientId())
+        Patient patient = patientRepository.findById(createAppointmentDto.getPatientId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        MedicalService service = medicalServiceRepository.findById(appointmentDto.getServiceId())
+        MedicalService service = medicalServiceRepository.findById(createAppointmentDto.getServiceId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         appointment.setDoctor(doctor);
         appointment.setService(service);
         appointment.setPatient(patient);
 
-        return appointmentMapper.toDto(appointmentRepository.save(appointment));
+        return createAppointmentMapper.toDto(appointmentRepository.save(appointment));
     }
 
     public List<AppointmentDto> findAll() {

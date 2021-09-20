@@ -19,7 +19,7 @@ public class SpecialtyResource {
     }
 
     @PostMapping()
-    public SpecialtyDto create(@RequestBody  SpecialtyDto specialtyDto) {
+    public SpecialtyDto create(@RequestBody SpecialtyDto specialtyDto) {
         return specialtyService.create(specialtyDto);
     }
 

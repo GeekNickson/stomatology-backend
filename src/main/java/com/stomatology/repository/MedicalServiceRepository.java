@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+
 public interface MedicalServiceRepository extends JpaRepository<MedicalService, Long> {
 
     List<MedicalService> findDistinctByDoctorsContaining(Doctor doctor);

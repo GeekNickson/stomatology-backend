@@ -1,6 +1,7 @@
 package com.stomatology.resource;
 
 import com.stomatology.dto.AppointmentDto;
+import com.stomatology.dto.create.CreateAppointmentDto;
 import com.stomatology.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,8 @@ public class AppointmentResource {
     }
 
     @PostMapping()
-    public AppointmentDto create(@RequestBody  AppointmentDto appointmentDto) {
-        return appointmentService.create(appointmentDto);
+    public CreateAppointmentDto create(@RequestBody CreateAppointmentDto createAppointmentDto) {
+        return appointmentService.create(createAppointmentDto);
     }
 
     @DeleteMapping("/{id}")

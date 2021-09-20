@@ -1,6 +1,7 @@
 package com.stomatology.entity.user;
 
 import com.stomatology.entity.Appointment;
+import com.stomatology.entity.Feedback;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,4 +27,7 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     private List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<Feedback> feedbacks;
 }

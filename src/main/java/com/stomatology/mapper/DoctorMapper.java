@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {SpecialtyMapper.class, ServiceMapper.class})
 public interface DoctorMapper extends EntityMapper<Doctor, DoctorDto> {
 
+    @Mapping(target = "roleName", source = "user.account.role.name")
     @Mapping(target = "profilePictureUrl", source = "user.profilePicture.path")
     @Mapping(target = "lastName", source = "user.lastName")
     @Mapping(target = "firstName", source = "user.firstName")

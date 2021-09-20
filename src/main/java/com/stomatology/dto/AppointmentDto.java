@@ -9,8 +9,10 @@ import java.time.LocalDateTime;
 @Setter
 public class AppointmentDto {
     private Long id;
+    private String doctorFirstName;
+    private String doctorLastName;
+    private String patientFirstName;
+    private String patientLastName;
+    private String service;
     private LocalDateTime dateTime;
-    private Long doctorId;
-    private Long patientId;
-    private Long serviceId;
 }
